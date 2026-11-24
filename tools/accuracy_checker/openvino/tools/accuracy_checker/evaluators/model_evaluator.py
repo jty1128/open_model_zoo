@@ -283,12 +283,12 @@ class ModelEvaluator(BaseEvaluator):
                 **kwargs
             )
         return self.process_dataset_async_requests(
-                dataset_iterator, metric_config, progress_reporter, stored_predictions,
-                **kwargs
-            )
+            dataset_iterator, metric_config, progress_reporter, stored_predictions,
+            **kwargs
+        )
 
     def process_dataset_async_requests(
-        self, dataset_iterator, metric_config, progress_reporter, stored_predictions, **kwargs):
+            self, dataset_iterator, metric_config, progress_reporter, stored_predictions, **kwargs):
         if self.launcher.config['framework'] == 'openvino':
             def completion_callback(request_id):
                 queued_irs.remove(request_id)
@@ -347,7 +347,7 @@ class ModelEvaluator(BaseEvaluator):
             print_info("prediction objects are save to {}".format(stored_predictions))
 
     def process_dataset_async_infer_queue(
-        self, dataset_iterator, metric_config, progress_reporter, stored_predictions, **kwargs):
+            self, dataset_iterator, metric_config, progress_reporter, stored_predictions, **kwargs):
 
         def completion_callback(request, user_data):
             batch_id, batch_input_ids, batch_annotation, batch_identifiers, batch_meta = user_data
@@ -776,7 +776,7 @@ class ModelEvaluator(BaseEvaluator):
         metric_dispatcher = MetricsExecutor(get_config_metrics(dataset_config), postpone_metrics=True)
         extracted_results, extracted_meta = [], []
         for result_presenter, metric_result in metric_dispatcher.get_metric_result_template(
-            get_config_metrics(dataset_config), False):
+                get_config_metrics(dataset_config), False):
             result, metadata = result_presenter.extract_result(metric_result, names_from_refs=True)
             if isinstance(result, list):
                 extracted_results.extend(result)
@@ -795,12 +795,12 @@ def get_config_metrics(config):
     sub_evaluation = config.get('sub_evaluation', False)
     if sub_evaluation is not None:
         size = config.get('subsample_size')
-        subset_metrics = config.get('subset_metrics',[])
+        subset_metrics = config.get('subset_metrics', [])
         for item in subset_metrics:
             subset_size = item.get('subset_size')
             if size is None or subset_size == size:
                 # first subset_metrics or matching subsample_size
                 metrics = item.get('metrics')
                 break
-    
-    return config.get('metrics',[]) if (metrics is None) else metrics
+
+    return config.get('metrics', []) if (metrics is None) else metrics
